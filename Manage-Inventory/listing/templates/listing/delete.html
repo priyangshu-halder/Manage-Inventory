@@ -1,0 +1,22 @@
+{% extends 'listing/base.html' %}
+{% block container %}
+<li>
+    <ul>Name: {{item.name}}</ul>
+    <ul>Price: {{item.price}}</ul>
+    <ul>Quantity: {{item.quantity}}</ul>
+    <ul>Status: {{item.status}}</ul>
+</li>
+{{item.name}}
+{{item.price}}
+{{item.quantity}}
+{{item.status}}
+
+<div class="card">
+    <form id="inventoryForm" method="POST">
+        {% csrf_token %}
+        Are you sure you want to delete "{{ item.name }}"?
+        <button type="submit" class="btn btn-primary">Delete</button>
+    </form>
+</div>
+
+{% endblock %}

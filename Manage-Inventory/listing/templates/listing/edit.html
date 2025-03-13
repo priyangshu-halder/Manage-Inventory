@@ -1,0 +1,18 @@
+{% extends 'listing/base.html' %}
+{% block container %}
+{{item.name}}
+{{item.price}}
+{{item.quantity}}
+{{item.status}}
+
+<div class="card">
+    <form id="inventoryForm" method="POST">
+        {% csrf_token %}
+        {{ form }}
+        {{ form.errors }}
+        {{ form.non_field_errors }}
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
+
+{% endblock %}

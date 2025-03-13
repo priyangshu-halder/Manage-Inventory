@@ -1,0 +1,72 @@
+{% extends 'listing/base.html' %}
+{% block container %}
+
+<div class="main-content">
+    <div class="header">
+        <div>
+            <h1 class="page-title">Dashboard</h1>
+            <p class="date-display">Today: <span id="currentDate"></span></p>
+        </div>
+        <div class="header-actions">
+            <div class="search-bar">
+                <span class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                </span>
+                <input type="text" class="search-input" placeholder="Search inventory...">
+            </div>
+            <div class="user-menu">
+                <div class="avatar">A</div>
+                <div class="user-info">
+                    <div style="font-weight: 500;">Admin User</div>
+                    <div style="font-size: 0.75rem; color: var(--gray-600);">Administrator</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="stats-grid">
+            <table class="products-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Status</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                {% for i in inventory_items %}
+                <tbody>
+                    <tr>
+                        <th>{{ i.name }}</th>
+                        <th>{{ i.status }}</th>
+                        <th>{{ i.quantity }}</th>
+                        <th>{{ i.price }}</th>
+                        <th>
+                            <a href="{% url 'edit' i.unique_id %}">
+                                <button class="b-toggle">Edit</button>
+                            </a>
+                            <a href="{% url 'delete' i.unique_id %}">
+                                <button class="b-toggle">Delete</button></th>
+                            </a>
+                    </tr>
+                </tbody>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Set current date
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
+    });
+</script>
+
+{% endblock %}

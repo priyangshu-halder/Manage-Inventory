@@ -1,0 +1,199 @@
+{% extends 'listing/base.html' %}
+{% block container %}
+
+<div class="main-content">
+    <div class="header">
+        <div>
+            <h1 class="page-title">Inventory List</h1>
+            <p class="date-display">Last updated: <span id="lastUpdated"></span></p>
+        </div>
+        <div class="header-actions">
+            <div class="search-bar">
+                <span class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                </span>
+                <input type="text" id="searchInput" class="search-input" placeholder="Search inventory...">
+            </div>
+            <a href="/add-inventory/" class="button button-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                </svg>
+                Add Item
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="tabs">
+            <div class="tab active">All Items</div>
+            <div class="tab">Active</div>
+            <div class="tab">Inactive</div>
+            <div class="tab">Low Stock</div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <div class="dropdown">
+                <button class="button button-outline">
+                    Filter by Category
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                    </svg>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#" class="dropdown-item">All Categories</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">Electronics</a>
+                    <a href="#" class="dropdown-item">Accessories</a>
+                    <a href="#" class="dropdown-item">Computer Peripherals</a>
+                    <a href="#" class="dropdown-item">Storage</a>
+                </div>
+            </div>
+            <div>
+                <span id="itemCount">0</span> items
+            </div>
+        </div>
+
+        <table class="products-table" id="inventoryTable">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Date Added</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Sample data - would be populated by Django in real app -->
+                {% for i in items %}
+                <tr>
+                    <td>{{i.name}}</td>
+                    <td>{{i.quantity}}</td>
+                    <td>{{i.price}}</td>
+                    <td>{{i.date}}</td>
+                    <td>{{i.status}}</td>
+                    <td>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <a href="{% url 'edit' i.unique_id %}" class="button-icon" title="View Details">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    viewBox="0 0 16 16">
+                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                    <path
+                                        d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                                </svg>
+                            </a>
+                            <a href="{% url 'edit' i.unique_id %}" class="button-icon" title="Edit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                                </svg>
+                            </a>
+                            <a href="{% url 'delete' i.unique_id %}" class="button-icon" title="Delete">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                    <path fill-rule="evenodd"
+                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Set default date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').value = today;
+
+        // Calculate total price automatically
+        const quantityInput = document.getElementById('quantity');
+        const priceInput = document.getElementById('price');
+        const totalPriceInput = document.getElementById('totalPrice');
+
+        function calculateTotal() {
+            const quantity = parseFloat(quantityInput.value) || 0;
+            const price = parseFloat(priceInput.value) || 0;
+            const total = (quantity * price).toFixed(2);
+            totalPriceInput.value = total;
+        }
+
+        quantityInput.addEventListener('input', calculateTotal);
+        priceInput.addEventListener('input', calculateTotal);
+
+        // Handle form submission
+        const inventoryForm = document.getElementById('inventoryForm');
+        const inventoryTable = document.getElementById('inventoryTable').getElementsByTagName('tbody')[0];
+
+        inventoryForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Get form values
+            const productName = document.getElementById('productName').value;
+            const quantity = document.getElementById('quantity').value;
+            const price = document.getElementById('price').value;
+            const totalPrice = document.getElementById('totalPrice').value;
+            const date = document.getElementById('date').value;
+            const status = document.getElementById('status').value;
+
+            // Create new table row
+            const newRow = inventoryTable.insertRow();
+
+            // Add cells to the row
+            const nameCell = newRow.insertCell(0);
+            const quantityCell = newRow.insertCell(1);
+            const priceCell = newRow.insertCell(2);
+            const totalCell = newRow.insertCell(3);
+            const dateCell = newRow.insertCell(4);
+            const statusCell = newRow.insertCell(5);
+
+            // Format date for display
+            const formattedDate = new Date(date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+
+            // Add content to cells
+            nameCell.textContent = productName;
+            quantityCell.textContent = quantity;
+            priceCell.textContent = parseFloat(price).toFixed(2);
+            totalCell.textContent = parseFloat(totalPrice).toFixed(2);
+            dateCell.textContent = formattedDate;
+
+            // Add styled status
+            const statusSpan = document.createElement('span');
+            statusSpan.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+            statusSpan.className = `status status-${status}`;
+            statusCell.appendChild(statusSpan);
+
+            // Reset form
+            inventoryForm.reset();
+            document.getElementById('date').value = today;
+            totalPriceInput.value = '';
+        });
+
+        // Reset button functionality
+        document.getElementById('resetBtn').addEventListener('click', function () {
+            inventoryForm.reset();
+            document.getElementById('date').value = today;
+            totalPriceInput.value = '';
+        });
+    });
+</script>
+{% endblock %}
